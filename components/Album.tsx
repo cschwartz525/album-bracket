@@ -10,14 +10,14 @@ interface AlbumProps {
 
 const Album = ({ albumName, artistName, coverImg }: AlbumProps) => {
   return (
-    <div>
+    <div className="text-center cursor-pointer transition ease-in-out hover:scale-110">
       <Image
         src={coverImg}
         alt={`${albumName} by ${artistName}`}
         height={200}
         width={200}
       />
-      <p>{albumName}</p>
+      <p className="font-bold mt-2">{albumName}</p>
       <p>{artistName}</p>
     </div>
   );

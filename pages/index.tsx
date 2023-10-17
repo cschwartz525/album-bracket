@@ -17,18 +17,21 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Album Bracket</h1>
+        <h1 className="text-3xl font-bold mb-6">Album Bracket</h1>
 
-        <Album
-          albumName="The Blue Album"
-          artistName="Weezer"
-          coverImg="/weezer.jpeg"
-        />
-        <Album
-          albumName="Dookie"
-          artistName="Green Day"
-          coverImg="/greenday.jpeg"
-        />
+        <div className="flex gap-8 items-center">
+          <Album
+            albumName="The Blue Album"
+            artistName="Weezer"
+            coverImg="/weezer.jpeg"
+          />
+          <p>vs</p>
+          <Album
+            albumName="Dookie"
+            artistName="Green Day"
+            coverImg="/greenday.jpeg"
+          />
+        </div>
       </main>
 
       <footer className={styles.footer}>
