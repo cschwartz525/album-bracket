@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useCallback, useState } from 'react';
 import Album, { AlbumProps } from '../components/Album';
 import styles from '../styles/Home.module.css';
 
@@ -9,6 +10,15 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ albums }) => {
+  const [round, setRound] = useState(0);
+
+  const incrementRound = useCallback(() => {
+    setRound(round + 1);
+  }, [round, setRound]);
+
+  const album1 = albums[round * 2];
+  const album2 = albums[round * 2 + 1];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -25,15 +35,17 @@ const Home: NextPage<HomeProps> = ({ albums }) => {
 
         <div className="flex gap-8 items-center">
           <Album
-            albumName={albums[0].albumName}
-            artistName={albums[0].artistName}
-            coverImg={albums[0].coverImg}
+            albumName={album1.albumName}
+            artistName={album1.artistName}
+            coverImg={album1.coverImg}
+            onClick={incrementRound}
           />
           <p>vs</p>
           <Album
-            albumName={albums[1].albumName}
-            artistName={albums[1].artistName}
-            coverImg={albums[1].coverImg}
+            albumName={album2.albumName}
+            artistName={album2.artistName}
+            coverImg={album2.coverImg}
+            onClick={incrementRound}
           />
         </div>
       </main>
