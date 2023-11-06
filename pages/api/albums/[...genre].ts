@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { shuffleArray } from '../../../utils/array';
 import { getSpotifyAccessToken } from '../../../utils/token';
 import getIdsByGenre from '../../../utils/get-ids-by-genre';
 
@@ -29,7 +30,7 @@ export default async function handler(
     );
     if (response.ok) {
       const json = await response.json();
-      res.json(formatAlbumData(json));
+      res.json(shuffleArray(formatAlbumData(json)));
     } else if (response.status === 401) {
       // If the cause of the error is expired access token, request a new one and try again
       token = await getSpotifyAccessToken();
