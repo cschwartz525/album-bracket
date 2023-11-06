@@ -1,10 +1,14 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Album from '../components/Album';
+import Album, { AlbumProps } from '../components/Album';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+interface HomeProps {
+  albums: AlbumProps[];
+}
+
+const Home: NextPage<HomeProps> = ({ albums }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -21,15 +25,15 @@ const Home: NextPage = () => {
 
         <div className="flex gap-8 items-center">
           <Album
-            albumName="The Blue Album"
-            artistName="Weezer"
-            coverImg="/weezer.jpeg"
+            albumName={albums[0].albumName}
+            artistName={albums[0].artistName}
+            coverImg={albums[0].coverImg}
           />
           <p>vs</p>
           <Album
-            albumName="Dookie"
-            artistName="Green Day"
-            coverImg="/greenday.jpeg"
+            albumName={albums[1].albumName}
+            artistName={albums[1].artistName}
+            coverImg={albums[1].coverImg}
           />
         </div>
       </main>
@@ -48,6 +52,12 @@ const Home: NextPage = () => {
       </footer>
     </div>
   );
+};
+
+Home.getInitialProps = async () => {
+  const res = await fetch('http://localhost:3000/api/albums/alternative');
+  const albums = await res.json();
+  return { albums };
 };
 
 export default Home;

@@ -2,7 +2,7 @@ import { Component } from 'react';
 import type { AppProps } from 'next/app';
 import Image from 'next/image';
 
-interface AlbumProps {
+export interface AlbumProps {
   albumName: string;
   artistName: string;
   coverImg: string;
