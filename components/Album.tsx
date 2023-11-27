@@ -1,5 +1,3 @@
-import { Component } from 'react';
-import type { AppProps } from 'next/app';
 import Image from 'next/image';
 import type { Album } from '../types/Album';
 

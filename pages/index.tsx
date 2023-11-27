@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import AlbumComponent from '../components/Album';
+import ResultsComponent from '../components/Results';
 import styles from '../styles/Home.module.css';
 import type { Album } from '../types/Album';
 
@@ -68,16 +69,7 @@ const Home: NextPage<HomeProps> = ({ albums }) => {
         <h1 className="text-3xl font-bold mb-6">Album Bracket</h1>
 
         {isGameOver ? (
-          <>
-            <h3 className="text-center font-bold">Final Rankings</h3>
-            <ul className="text-center">
-              {rankings.map((album, index) => (
-                <li key={`album_${index}`}>
-                  {index + 1}. {album.artistName} - {album.albumName}
-                </li>
-              ))}
-            </ul>
-          </>
+          <ResultsComponent albums={rankings} />
         ) : (
           <div className="flex gap-8 items-center">
             <AlbumComponent
