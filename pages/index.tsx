@@ -11,14 +11,47 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ albums }) => {
-  const [round, setRound] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [leftIndex, setLeftIndex] = useState(0);
+  const [rightIndex, setRightIndex] = useState(1);
+  const [rankings, setRankings] = useState([albums[0]]);
+
+  const leftAlbum = rankings[leftIndex];
+  const rightAlbum = albums[rightIndex];
 
   const incrementRound = useCallback(() => {
-    setRound(round + 1);
-  }, [round, setRound]);
+    if (rightIndex >= albums.length - 1) {
+      setIsGameOver(true);
+    } else {
+      setLeftIndex(0);
+      setRightIndex(rightIndex + 1);
+    }
+  }, [albums, rightIndex, setIsGameOver, setLeftIndex, setRightIndex]);
 
-  const album1 = albums[round * 2];
-  const album2 = albums[round * 2 + 1];
+  const onLeftClick = useCallback(() => {
+    if (leftIndex < rankings.length - 1) {
+      setLeftIndex(leftIndex + 1);
+    } else {
+      const newRankings = [...rankings];
+      newRankings.push(rightAlbum);
+      setRankings(newRankings);
+      incrementRound();
+    }
+  }, [
+    incrementRound,
+    leftIndex,
+    rankings,
+    rightAlbum,
+    setLeftIndex,
+    setRankings
+  ]);
+
+  const onRightClick = useCallback(() => {
+    const newRankings = [...rankings];
+    newRankings.splice(leftIndex, 0, rightAlbum);
+    setRankings(newRankings);
+    incrementRound();
+  }, [incrementRound, leftIndex, rankings, rightAlbum]);
 
   return (
     <div className={styles.container}>
@@ -34,21 +67,34 @@ const Home: NextPage<HomeProps> = ({ albums }) => {
       <main className={styles.main}>
         <h1 className="text-3xl font-bold mb-6">Album Bracket</h1>
 
-        <div className="flex gap-8 items-center">
-          <AlbumComponent
-            albumName={album1.albumName}
-            artistName={album1.artistName}
-            coverImg={album1.coverImg}
-            onClick={incrementRound}
-          />
-          <p>vs</p>
-          <AlbumComponent
-            albumName={album2.albumName}
-            artistName={album2.artistName}
-            coverImg={album2.coverImg}
-            onClick={incrementRound}
-          />
-        </div>
+        {isGameOver ? (
+          <>
+            <h3 className="text-center font-bold">Final Rankings</h3>
+            <ul className="text-center">
+              {rankings.map((album, index) => (
+                <li key={`album_${index}`}>
+                  {index + 1}. {album.artistName} - {album.albumName}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <div className="flex gap-8 items-center">
+            <AlbumComponent
+              albumName={leftAlbum.albumName}
+              artistName={leftAlbum.artistName}
+              coverImg={leftAlbum.coverImg}
+              onClick={onLeftClick}
+            />
+            <p>vs</p>
+            <AlbumComponent
+              albumName={rightAlbum.albumName}
+              artistName={rightAlbum.artistName}
+              coverImg={rightAlbum.coverImg}
+              onClick={onRightClick}
+            />
+          </div>
+        )}
       </main>
 
       <footer className={styles.footer}>
