@@ -1,26 +1,32 @@
-import { Component } from 'react';
-import type { AppProps } from 'next/app';
 import Image from 'next/image';
+import type { Album } from '../types/Album';
 
-interface AlbumProps {
-  albumName: string;
-  artistName: string;
-  coverImg: string;
-}
+export type AlbumProps = Album & {
+  onClick: () => void;
+};
 
-const Album = ({ albumName, artistName, coverImg }: AlbumProps) => {
+const AlbumComponent = ({
+  albumName,
+  artistName,
+  coverImg,
+  onClick
+}: AlbumProps) => {
   return (
-    <div className="text-center cursor-pointer transition ease-in-out hover:scale-110">
+    <div
+      className="flex flex-col max-w-[250px] items-center text-center cursor-pointer transition ease-in-out hover:scale-110"
+      onClick={onClick}
+      role="button"
+    >
       <Image
         src={coverImg}
         alt={`${albumName} by ${artistName}`}
-        height={200}
-        width={200}
+        height={250}
+        width={250}
       />
-      <p className="font-bold mt-2">{albumName}</p>
-      <p>{artistName}</p>
+      <p className="font-bold mt-2 max-w-[250px] truncate">{albumName}</p>
+      <p className="max-w-[250px] truncate">{artistName}</p>
     </div>
   );
 };
 
-export default Album;
+export default AlbumComponent;
